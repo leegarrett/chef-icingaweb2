@@ -16,19 +16,28 @@ end
 
 node['icingaweb2']['apache_modules'].each { |mod| include_recipe "apache2::#{mod}" }
 
-if node['lsb']['codename'] == 'trusty'
-  package 'libapache2-mod-php5' do
+if node['platform_version'].to_f >= 14.04
+  package 'libapache2-mod-php' do
     action :install
     notifies :reload, 'service[apache2]', :delayed
   end
 end
 
-if (node['platform_family'] == 'debian') && (node['lsb']['codename'] == 'xenial') # ~FC023
-  apache_module 'php7.0' do
-    conf false
-    filename 'libphp7.0.so'
-    identifier 'php7_module'
-    notifies platform?('windows') ? :restart : :reload, 'service[apache2]'
+if (node['platform_family'] == 'debian')
+  if (node['lsb']['codename'] == 'bionic')
+    apache_module 'php7.2' do
+      conf false
+      filename 'libphp7.2.so'
+      identifier 'php7_module'
+      notifies platform?('windows') ? :restart : :reload, 'service[apache2]'
+    end
+  elsif (node['lsb']['codename'] == 'xenial')
+    apache_module 'php7.0' do
+      conf false
+      filename 'libphp7.0.so'
+      identifier 'php7_module'
+      notifies platform?('windows') ? :restart : :reload, 'service[apache2]'
+    end
   end
 end
 

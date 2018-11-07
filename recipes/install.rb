@@ -21,7 +21,9 @@ end
 php_ini = if %w[rhel amazon fedora].include?(node['platform_family'])
             '/etc/php.ini'
           elsif node['platform_family'] == 'debian'
-            if node['lsb']['codename'] == 'xenial'
+            if node['lsb']['codename'] == 'bionic'
+              '/etc/php/7.2/apache2/php.ini'
+            elsif node['lsb']['codename'] == 'xenial'
               '/etc/php/7.0/apache2/php.ini'
             else
               '/etc/php5/apache2/php.ini'
