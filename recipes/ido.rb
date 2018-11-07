@@ -51,7 +51,7 @@ execute 'schema_load_ido_mysql' do
   -p#{node['icingaweb2']['ido_db']['db_password']} \
   #{node['icingaweb2']['ido_db']['db_name']} < /usr/share/icinga2-ido-#{node['icingaweb2']['db_type']}/schema/#{node['icingaweb2']['db_type']}.sql \
   && touch /etc/icinga2/schema_loaded_ido_mysql"
-  creates '/etc/icinga2//schema_loaded_ido_mysql'
+  creates '/etc/icinga2/schema_loaded_ido_mysql'
   environment 'MYSQL_HOME' => node['icingaweb2']['mysql_home']
   only_if { node['icingaweb2']['db_type'] == 'mysql' && node['icingaweb2']['ido_db']['load_schema'] }
 end
@@ -64,8 +64,8 @@ execute 'schema_load_ido_pgsql' do
   -U #{node['icingaweb2']['ido_db']['db_user']}\
   -d #{node['icingaweb2']['ido_db']['db_name']} < /usr/share/icinga2-ido-#{node['icingaweb2']['db_type']}/schema/#{node['icingaweb2']['db_type']}.sql \
   && export PGPASSWORD=\'\'\" \
-  && touch /var/lib/pgsql/schema_loaded_ido_pgsql"
-  creates '/var/lib/pgsql/schema_loaded_ido_pgsql'
+  && touch /etc/icinga2/schema_loaded_ido_pgsql"
+  creates '/etc/icinga2/schema_loaded_ido_pgsql'
   only_if { node['icingaweb2']['db_type'] == 'pgsql' && node['icingaweb2']['ido_db']['load_schema'] }
 end
 
@@ -86,7 +86,7 @@ execute 'schema_load_icingaweb2_mysql' do
   -p#{node['icingaweb2']['web2_db']['db_password']} \
   #{node['icingaweb2']['web2_db']['db_name']} < /usr/share/icinga2-ido-#{node['icingaweb2']['db_type']}/schema/#{node['icingaweb2']['db_type']}.schema.sql \
   && touch /etc/icinga2/schema_loaded_web2_mysql"
-  creates '/etc/icinga2//schema_loaded_web2_mysql'
+  creates '/etc/icinga2/schema_loaded_web2_mysql'
   environment 'MYSQL_HOME' => node['icingaweb2']['mysql_home']
   only_if { node['icingaweb2']['db_type'] == 'mysql' }
 end
@@ -99,8 +99,8 @@ execute 'schema_load_icingaweb2_pgsql' do
   -U #{node['icingaweb2']['web2_db']['db_user']}\
   -d #{node['icingaweb2']['web2_db']['db_name']} < /usr/share/icinga2-ido-#{node['icingaweb2']['db_type']}/schema/#{node['icingaweb2']['db_type']}.schema.sql \
   && export PGPASSWORD=\'\'\" \
-  && touch /var/lib/pgsql/schema_loaded_web2_pgsql"
-  creates '/var/lib/pgsql/schema_loaded_web2_pgsql'
+  && touch /etc/icinga2/schema_loaded_web2_pgsql"
+  creates '/etc/icinga2/schema_loaded_web2_pgsql'
   only_if { node['icingaweb2']['db_type'] == 'pgsql' }
 end
 
